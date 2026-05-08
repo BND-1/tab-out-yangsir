@@ -54,33 +54,6 @@ body::before {
   max-width: 1300px;
 }
 
-/* ---- Header ---- */
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 48px;
-  padding-bottom: 24px;
-  border-bottom: 1px solid var(--warm-gray);
-}
-
-.header-left h1 {
-  font-family: 'Newsreader', serif;
-  font-weight: 300;
-  font-size: 28px;
-  letter-spacing: -0.5px;
-  color: var(--ink);
-  margin-bottom: 4px;
-}
-
-.header-left .date {
-  font-size: 13px;
-  color: var(--muted);
-  font-weight: 400;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-}
-
 /* ---- Tab cleanup banner ---- */
 .tab-cleanup-banner {
   background: linear-gradient(135deg, rgba(200, 113, 58, 0.04), rgba(200, 113, 58, 0.09));
@@ -217,10 +190,16 @@ header {
 }
 
 /* ---- Mission Cards ---- */
+/* Row-major grid: predictable left→right, top→bottom reading order.
+   Cards never jump between columns when one is removed — they only
+   shift to fill the gap in document order. Tradeoff vs. CSS columns:
+   uneven card heights leave whitespace below shorter cards in a row. */
 .missions {
-  columns: 280px;
-  column-gap: 12px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
   margin-bottom: 40px;
+  align-items: start;
 }
 
 .mission-card {
@@ -235,8 +214,6 @@ header {
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  break-inside: avoid;       /* don't split a card across columns */
-  margin-bottom: 12px;       /* vertical spacing (replaces grid gap) */
 }
 
 /* Colored top border instead of side bar for grid cards */
@@ -657,7 +634,6 @@ footer {
   to { opacity: 1; transform: translateY(0); }
 }
 
-header { animation: fadeUp 0.5s ease both; }
 .tab-cleanup-banner { animation: fadeUp 0.5s ease 0.1s both; }
 .nudge-banner { animation: fadeUp 0.5s ease 0.15s both; }
 .active-section .section-header { animation: fadeUp 0.5s ease 0.2s both; }
@@ -701,8 +677,8 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
    ================================================================ */
 
 .missions-empty-state {
-  /* Takes the full width — spans all columns */
-  column-span: all;
+  /* Takes the full width — spans all grid columns */
+  grid-column: 1 / -1;
 
   display: flex;
   flex-direction: column;
