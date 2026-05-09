@@ -20,6 +20,27 @@
   --shadow: rgba(26, 22, 19, 0.06);
 }
 
+/* Dark mode — follows the system preference. Keeps the same warm palette
+   but inverts the paper/ink axis and lightens accents so they stay
+   readable on dark backgrounds. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ink: #ece4d8;
+    --paper: #15120e;
+    --warm-gray: #2e2820;
+    --muted: #8a8175;
+    --accent-amber: #e8a070;
+    --accent-sage: #8aaa92;
+    --accent-slate: #8a9baa;
+    --accent-rose: #d48a8a;
+    --status-active: #6fb27e;
+    --status-cooling: #d4a548;
+    --status-abandoned: #d48a8a;
+    --card-bg: #1f1a14;
+    --shadow: rgba(0, 0, 0, 0.45);
+  }
+}
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
@@ -107,7 +128,7 @@ body::before {
   border-radius: 6px;
   border: none;
   background: var(--accent-amber);
-  color: white;
+  color: var(--paper);
   cursor: pointer;
   transition: all 0.2s;
   white-space: nowrap;
@@ -812,7 +833,7 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
   font-family: 'DM Sans', sans-serif;
   font-size: 12px;
   font-weight: 500;
-  color: #fff;
+  color: var(--paper);
   background: var(--accent-sage);
   border: none;
   border-radius: 5px;
@@ -944,7 +965,7 @@ footer { animation: fadeUp 0.5s ease 0.65s both; }
   left: 5px;
   width: 4px;
   height: 8px;
-  border: solid white;
+  border: solid var(--paper);
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
 }
