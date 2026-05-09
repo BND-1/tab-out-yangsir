@@ -1467,6 +1467,19 @@ document.addEventListener('click', (e) => {
   }
 });
 
+// ---- Theme toggle — flip light/dark, persist in localStorage ----
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('#themeToggle')) return;
+
+  const explicit  = document.documentElement.dataset.theme;
+  const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const isDark    = explicit ? explicit === 'dark' : systemDark;
+  const next      = isDark ? 'light' : 'dark';
+
+  document.documentElement.dataset.theme = next;
+  try { localStorage.setItem('theme', next); } catch {}
+});
+
 // ---- Archive search — filter archived items as user types ----
 document.addEventListener('input', async (e) => {
   if (e.target.id !== 'archiveSearch') return;

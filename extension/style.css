@@ -20,9 +20,11 @@
   --shadow: rgba(26, 22, 19, 0.06);
 }
 
-/* Dark mode — follows the system preference. Keeps the same warm palette
-   but inverts the paper/ink axis and lightens accents so they stay
-   readable on dark backgrounds. */
+/* Dark mode — follows the system preference by default, but a manual
+   `data-theme` on <html> (toggled by the footer button, persisted in
+   localStorage) wins over it. The attribute-selector blocks below repeat
+   the palettes because manual choice has to override the @media auto
+   case in either direction. */
 @media (prefers-color-scheme: dark) {
   :root {
     --ink: #ece4d8;
@@ -39,6 +41,38 @@
     --card-bg: #1f1a14;
     --shadow: rgba(0, 0, 0, 0.45);
   }
+}
+
+:root[data-theme="light"] {
+  --ink: #1a1613;
+  --paper: #f8f5f0;
+  --warm-gray: #e8e2da;
+  --muted: #9a918a;
+  --accent-amber: #c8713a;
+  --accent-sage: #5a7a62;
+  --accent-slate: #5a6b7a;
+  --accent-rose: #b35a5a;
+  --status-active: #3d7a4a;
+  --status-cooling: #b8892e;
+  --status-abandoned: #b35a5a;
+  --card-bg: #fffdf9;
+  --shadow: rgba(26, 22, 19, 0.06);
+}
+
+:root[data-theme="dark"] {
+  --ink: #ece4d8;
+  --paper: #15120e;
+  --warm-gray: #2e2820;
+  --muted: #8a8175;
+  --accent-amber: #e8a070;
+  --accent-sage: #8aaa92;
+  --accent-slate: #8a9baa;
+  --accent-rose: #d48a8a;
+  --status-active: #6fb27e;
+  --status-cooling: #d4a548;
+  --status-abandoned: #d48a8a;
+  --card-bg: #1f1a14;
+  --shadow: rgba(0, 0, 0, 0.45);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -632,10 +666,59 @@ footer {
   margin-top: 4px;
 }
 
+.footer-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
 .last-refresh {
   font-size: 11px;
   color: var(--muted);
 }
+
+/* ---- Theme toggle ---- */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--warm-gray);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.15s, border-color 0.15s, background 0.15s, transform 0.2s;
+}
+
+.theme-toggle:hover {
+  color: var(--ink);
+  border-color: var(--ink);
+  transform: rotate(15deg);
+}
+
+.theme-toggle svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Show only the icon that represents the action — moon when currently
+   light (click → dark), sun when currently dark (click → light). */
+.theme-toggle .icon-sun  { display: none; }
+.theme-toggle .icon-moon { display: block; }
+
+@media (prefers-color-scheme: dark) {
+  .theme-toggle .icon-sun  { display: block; }
+  .theme-toggle .icon-moon { display: none; }
+}
+
+:root[data-theme="light"] .theme-toggle .icon-sun  { display: none; }
+:root[data-theme="light"] .theme-toggle .icon-moon { display: block; }
+
+:root[data-theme="dark"]  .theme-toggle .icon-sun  { display: block; }
+:root[data-theme="dark"]  .theme-toggle .icon-moon { display: none; }
 
 .refresh-btn {
   font-family: 'DM Sans', sans-serif;
